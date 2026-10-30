@@ -1,0 +1,15 @@
+{
+  "name": "yabeiz",
+  "description": "Agent skills by Yabei Z.: check vibe coding sessions for the decisions your agent made without you.",
+  "owner": {
+    "name": "Yabei Z.",
+    "url": "https://github.com/yabeiz"
+  },
+  "plugins": [
+    {
+      "name": "vibe-coding-blindspot-checker",
+      "source": "./",
+      "description": "Find the decisions your coding agent made that you never did \u2014 read from your own sessions, ranked by The Command Scale."
+    }
+  ]
+}

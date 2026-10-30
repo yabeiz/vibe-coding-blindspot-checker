@@ -1,0 +1,16 @@
+{
+  "name": "vibe-coding-blindspot-checker",
+  "version": "0.1.0",
+  "description": "Find the decisions your coding agent made that you never did — read from your own sessions, ranked by The Command Scale.",
+  "type": "module",
+  "private": true,
+  "license": "Apache-2.0 AND CC-BY-4.0",
+  "author": "Yabei Z. (https://github.com/yabeiz)",
+  "homepage": "https://github.com/yabeiz/vibe-coding-blindspot-checker",
+  "repository": { "type": "git", "url": "https://github.com/yabeiz/vibe-coding-blindspot-checker.git" },
+  "keywords": ["agent-skills", "claude-code", "cursor", "codex", "gemini-cli", "vibe-coding", "code-review", "command-scale"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "conformance": "node conformance/run.mjs"
+  }
+}

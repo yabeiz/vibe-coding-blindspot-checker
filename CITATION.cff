@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+title: "vibe-coding-blindspot-checker"
+abstract: >-
+  An agent skill that reads a person's own coding-agent sessions and finds the
+  decisions the agent made that the person never made, still in the code, ordered
+  by The Command Scale v1.0. It carries the scale's normative text and an
+  implementation that passes its conformance cases.
+type: software
+version: "0.1.0"
+license: Apache-2.0
+repository-code: "https://github.com/yabeiz/vibe-coding-blindspot-checker"
+authors:
+  - name: "Yabei Z."
+    website: "https://github.com/yabeiz"
+keywords:
+  - vibe coding
+  - coding agents
+  - agent skills
+  - code review
+  - The Command Scale
+preferred-citation:
+  type: article
+  title: "Measuring what a person can get an AI to build"
+  abstract: >-
+    A six-level scale of the ability to use what a machine already knows — its
+    derivation, its instrument, and what building it taught us.
+  authors:
+    - name: "Mentor by farsurf"
+      website: "https://mentor.farsurf.com"
+  year: 2026
+  notes: >-
+    White paper, version 1.0, pre-publication draft. The normative text is
+    Appendix B together with Appendix A and sections 4, 5 and 9 of the paper.
+    Levels: L1 Note, L2 Verse, L3 Canon, L4 Chronicle, L5 Saga, L6 Myth.
+    Licensed CC BY 4.0.
+  url: "https://github.com/farsurf/command-scale/blob/main/spec/the-command-scale-v1.0.md"
