@@ -94,6 +94,8 @@ Run it after code review, not instead of it:
 1. **Run code review first, and let your agent fix what it finds.** Those are bugs: the code does not do what it is meant to. They need no decision from you.
 2. **Then run this.** What it lists is not bugs. Most of it works exactly as written; what it shows you is what your agent decided for you. Whether each is what you meant only you can say.
 
+On two real sessions run through both, the two barely overlapped: what code review found and this missed were bugs, and what only this found were product decisions nobody had made. [The comparison, with its limits.](evaluation/README.md)
+
 ## Install
 
 Tell your agent:
@@ -183,6 +185,7 @@ The session also gets a rating on the scale, added up across every audit you run
 - [`scripts/`](scripts) — preparing, checking and counting, in Node with no dependencies.
 - [`spec/`](spec/the-command-scale-v1.0.md) — The Command Scale v1.0.
 - [`conformance/`](conformance) — cases with their answers: `npm run conformance`.
+- [`evaluation/`](evaluation/README.md) — how it compared with code review on two real sessions.
 
 ## License
 
