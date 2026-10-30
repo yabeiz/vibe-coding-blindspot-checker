@@ -180,7 +180,7 @@ The session also gets a rating on the scale, added up across every audit you run
 
 ## Repository
 
-- [`SKILL.md`](SKILL.md) and [`references/`](references) — how the agent runs an audit.
+- [`SKILL.md`](SKILL.md) — how the agent runs an audit.
 - [`prompts/`](prompts) — what each reader is told.
 - [`scripts/`](scripts) — preparing, checking and counting, in Node with no dependencies.
 - [`spec/`](spec/the-command-scale-v1.0.md) — The Command Scale v1.0.
