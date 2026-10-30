@@ -94,7 +94,7 @@ Run it after code review, not instead of it:
 1. **Run code review first, and let your agent fix what it finds.** Those are bugs: the code does not do what it is meant to. They need no decision from you.
 2. **Then run this.** What it lists is not bugs. Most of it works exactly as written; what it shows you is what your agent decided for you. Whether each is what you meant only you can say.
 
-On two real sessions run through both, the two barely overlapped: what code review found and this missed were bugs, and what only this found were product decisions nobody had made. [The comparison, with its limits.](evaluation/README.md)
+On two real sessions run through both, the two barely overlapped. In the one sorted by hand, everything code review found and this missed was a bug, and everything only this found was a product decision nobody had made. [The comparison, with its limits.](evaluation/README.md)
 
 ## Install
 
