@@ -17,7 +17,66 @@ Run it when a coding session ends. It reads what you and your agent said, and fi
 
 Then each one is yours to decide, on the spot. The agent does not get to decide it a second time.
 
-<!-- EXAMPLE: replaced by a real English report before publishing -->
+## What a report looks like
+
+An excerpt from a real audit: a three-day Claude Code session that added direct messages, a reports page for admins and edit requests to a web app. Paths are shortened; `…` marks what is left out.
+
+```text
+AUDIT REPORT — 9 tasks in this session
+In this session the assistant settled 108 things on its own that are still in
+the work. It showed you 20 of them (17 in a reply, 3 in a document). The other
+88 you may not know (part 2). Of what it showed you, you never answered 17
+(part 3).
+
+1. TCS RATING FOR THIS SESSION — the average height your words reached
+| Request | Review | Roadblock      | Question |
+| 2.2     | 4.0    | none this time | 1.3      |
+
+2. WHAT YOU MAY NOT KNOW
+  …
+  Task 2 · View-only collaborators can ask the owner for edit rights
+  (your words here: 0 of the 4 situations, average height 0.0)
+  1. Is the owner emailed about an edit request when no chat reaches them?
+     Shows up in: An owner without Telegram connected gets a letter when a
+       collaborator asks for edit rights
+     The assistant decided: Yes: one email, only when no chat reaches the owner
+     In the work: backend/src/delegation/delegation.service.ts:570
+  …
+  3. Does an owner's Allow take effect at once when the owner's account is
+     looked after by a grown-up?
+     The assistant decided: No: Allow goes through the owner's own Manage-page
+       change, so the grown-up must approve too
+     In the work: backend/src/delegation/delegation.service.ts:609
+  …
+  5. Can a declined collaborator ask again?
+     Shows up in: A collaborator whose request was declined still sees the ask
+       button; each new ask reaches the owner again
+     The assistant decided: Yes, right away, with no limit or wait
+     In the work: backend/src/delegation/delegation.service.ts:554
+  …
+
+3. SHOWN TO YOU, NEVER ANSWERED
+  Money, data, access, or something sent out that cannot be called back
+  1. What can an admin do to a reported item?
+     In the task: Direct messages, and an admin page for reported content
+     If it is not what you meant: data is lost or overwritten, or shown to
+       somebody it should not be
+     The assistant decided: Dismiss, remove the message or comment, pause or
+       unpause the sender
+     In the work: frontend/src/pages/ReportsTab.jsx:74-82
+     You were shown it: in a reply, and never answered it
+  2. Who can open the reports page, and where?
+     If it is not what you meant: someone loses access that is theirs, or
+       gains access that is not
+     The assistant decided: A tab in the admin console; admin accounts only
+     In the work: frontend/src/pages/Console.jsx:1008
+     You were shown it: in a reply, and never answered it
+  …
+
+On this page: Decide task N item M · Decide shown N
+```
+
+Type `Decide task 2 item 5` and it asks you what it should be, part by part: the value, the rule, the case it covers, what happens when it fails. It does not fill in what you leave open. When you are done it says exactly what will change, from what to what, and changes nothing until you say `Apply`. If you cannot tell without knowing how that part works, `Explain this part` reads the code as it is now and tells you in plain words.
 
 ## How it differs
 
