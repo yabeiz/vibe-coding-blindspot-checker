@@ -13,7 +13,7 @@ Run it when a coding session ends. It reads what you and your agent said, and fi
 
 - **What your agent decided on its own** — the decisions your words never made and no reply or document ever showed you, still in your code now, with the file and the line.
 - **Where your words left them open.** Every task is read against [The Command Scale](https://github.com/farsurf/command-scale): in how many of four situations your words spoke, and how high they reached. Where your words were weakest, the agent decided the most — so that is where the list starts.
-- **What would cost most if it is not what you meant** — money, data, access, or something sent that cannot be called back — on a list of its own.
+- **What your agent told you and you never answered** — a decision it put in a reply or a document, that you let pass. On a list of its own, the gravest first: money, data, access, or something sent that cannot be called back, then what would not work as you meant, then what only looks different.
 
 Then each one is yours to decide, on the spot. The agent does not get to decide it a second time.
 
@@ -30,7 +30,10 @@ All of these read your work. They answer different questions.
 | Claude Code `/insights` | your sessions | a report on your habits and workflow |
 | **vibe-coding-blindspot-checker** | **your sessions and your code** | **the decisions your agent made for you, where they are in your code now, and how your words in each task measured on The Command Scale — a list you can act on today** |
 
-Run it after code review, not instead of it. Code review asks whether the code is right; this asks whether what it was meant to do is what you meant.
+Run it after code review, not instead of it:
+
+1. **Run code review first, and let your agent fix what it finds.** Those are bugs: the code does not do what it is meant to. They need no decision from you.
+2. **Then run this.** What it lists is not bugs. Most of it works exactly as written; what it shows you is what your agent decided for you. Whether each is what you meant only you can say.
 
 ## Install
 
@@ -101,8 +104,9 @@ The reading itself is done by the assistant you are already using, so what it re
 
 1. Your session is split into tasks.
 2. Each of your messages is placed in one of four situations — asking for something, reviewing what came back, saying progress has stopped, asking a question — and given a height on [The Command Scale](https://github.com/farsurf/command-scale), with your own words quoted. A quote that is not in your messages is thrown out.
-3. Helpers that never saw the conversation read what the agent decided and what it wrote into your code without saying so. The program keeps only what is still in your code, and moves what a reply or a document already showed you to its own list.
-4. Tasks where your words spoke in the fewest situations come first, then those where they reached least.
+3. Helpers that never saw the conversation read what the agent decided and what it wrote into your code without saying so. The program keeps only what is still in your code.
+4. What you were never told goes on the first list: tasks where your words spoke in the fewest situations come first, then those where they reached least.
+5. What a reply or a document told you, and you never answered, goes on the second list, ordered by what would follow if it is not what you meant. A bare "ok" answers only what the message right before it asked you; it does not answer one line inside a long report. What you did answer is on neither list.
 
 The session also gets a rating on the scale, added up across every audit you run, so you can see whether your sessions are getting better. It rates a session, never a person.
 

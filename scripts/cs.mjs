@@ -1604,7 +1604,7 @@ function cmdRating() {
     console.log(`| ${SITUATION_NAMES[c]} | ${here} | ${there} | ${move} |`);
   }
   console.log('');
-  if (ranked) { printUnseen(ranked, UNSEEN_SHOWN, '2. '); printRisky(ranked, UNSEEN_SHOWN, '3. '); }
+  if (ranked) { printUnseen(ranked, UNSEEN_SHOWN, '2. '); printUnanswered(ranked, UNSEEN_SHOWN, '3. '); }
   else console.log('2. The decisions are not listed yet: node scripts/cs.mjs unseen');
   if (first) console.log('Type any of the words below as they are, in this conversation; nothing else is needed.');
   pageFooter('report', '', ranked);
@@ -1613,8 +1613,8 @@ function cmdRating() {
   console.log('  they are, ending with the three lines above; translate each line once and');
   console.log('  use that same translation wherever it appears. Then stop: what to do next is theirs to');
   console.log('  say. The rating is of this session, never of the person. The two lists say');
-  console.log('  what they may not know and what would cost most if it is not what they meant,');
-  console.log('  not what is wrong: whether each is what they meant is theirs to say. What');
+  console.log('  what they may not know and what they were shown and never answered, not what');
+  console.log('  is wrong: whether each is what they meant is theirs to say. What');
   console.log('  each of the words does: SKILL.md, "Pages".');
   console.log('');
 }
@@ -1629,10 +1629,10 @@ function auditTotals(r) {
   if (!d && !seen) return 'The assistant settled nothing on its own in this session that is still in the work.';
   const reply = (r.seen || []).filter((s) => s.seen === 'reply').length;
   const shown = seen ? ` It showed you ${seen} of them (${reply} in a reply, ${seen - reply} in a document).` : '';
-  const risky = (r.risky || []).length;
   const left = d ? `${seen ? 'The other' : 'All'} ${d} you may not know (part 2).` : 'There is nothing it did not show you.';
-  if (!Array.isArray(r.risky)) return `In this session the assistant settled ${d + seen} thing(s) on its own that are still in the work.${shown} ${left} The high-risk list is not made yet: node scripts/cs.mjs unseen`;
-  return `In this session the assistant settled ${d + seen} thing(s) on its own that are still in the work.${shown} ${left} ${risky ? `${risky} ${risky === 1 ? 'is' : 'are'} high risk and you never answered ${risky === 1 ? 'it' : 'them'} (part 3).` : 'Nothing high risk is left that you did not answer.'}`;
+  if (!Array.isArray(r.unanswered)) return `In this session the assistant settled ${d + seen} thing(s) on its own that are still in the work.${shown} ${left} What it showed you and you never answered is not listed yet: node scripts/cs.mjs unseen`;
+  const open = r.unanswered.length;
+  return `In this session the assistant settled ${d + seen} thing(s) on its own that are still in the work.${shown} ${left} ${open ? `Of what it showed you, you never answered ${open} (part 3).` : 'You answered everything it showed you.'}`;
 }
 
 function meanHeights(tasks) {
@@ -1650,8 +1650,8 @@ function meanHeights(tasks) {
 /** The pages an audit moves between, like a site: each has what can be done
  *  on it, and every one of them can be reached from any other. */
 const PAGES = {
-  report: { name: 'Audit report', here: 'Decide task N item M (for instance: Decide task 1 item 3) · Decide high risk N (for instance: Decide high risk 1)' },
-  all: { name: 'All decisions', here: 'Decide task N item M (for instance: Decide task 1 item 3) · Decide high risk N (for instance: Decide high risk 1)' },
+  report: { name: 'Audit report', here: 'Decide task N item M (for instance: Decide task 1 item 3) · Decide shown N (for instance: Decide shown 1)' },
+  all: { name: 'All decisions', here: 'Decide task N item M (for instance: Decide task 1 item 3) · Decide shown N (for instance: Decide shown 1)' },
   lowest: { name: 'Lowest lines', here: 'Trace line N (for instance: Trace line 1)' },
   trace: { name: 'Trace', here: 'Decide line N point M (for instance: Decide line 1 point 2)' },
   overall: { name: 'Overall rating', here: '' },
@@ -1665,7 +1665,7 @@ function pageFooter(page, name, ranked) {
   // A list with nothing in it has nothing to fix.
   const lists = /^Decide task/.test(p.here);
   const here = !lists ? p.here : !ranked ? ''
-    : [ranked.ranked.length ? p.here.split(' · ')[0] : '', (ranked.risky || []).length ? p.here.split(' · ')[1] : ''].filter(Boolean).join(' · ');
+    : [ranked.ranked.length ? p.here.split(' · ')[0] : '', (ranked.unanswered || []).length ? p.here.split(' · ')[1] : ''].filter(Boolean).join(' · ');
   console.log('');
   console.log(`You are on: ${name || p.name}`);
   console.log(`On this page: ${here || 'nothing to do here, only to read'}`);
@@ -1681,11 +1681,11 @@ function cmdNav(page) {
 }
 
 /** What a fix page is called, from what is being fixed: `1.3` for a decision
- *  in the list, `h1` for one in the high-risk list, `line 1.2` for a point
+ *  in the list, `s1` for one they were shown and never answered, `line 1.2` for a point
  *  from a trace. */
 function fixName() {
   const rest = process.argv.slice(4);
-  if (/^h\d+$/.test(String(rest[0] || ''))) return `Decide high risk ${String(rest[0]).slice(1)}`;
+  if (/^s\d+$/.test(String(rest[0] || ''))) return `Decide shown ${String(rest[0]).slice(1)}`;
   const line = rest[0] === 'line';
   const [t, n] = String((line ? rest[1] : rest[0]) || '').split('.').map(Number);
   if (!Number.isInteger(t) || !Number.isInteger(n)) return '';
@@ -1712,14 +1712,15 @@ function cmdLowest() {
 /** One thing from a list, with where it is in the work, for them to decide. */
 function cmdFix(ref) {
   const r = unseenListed();
-  const high = /^h\d+$/.test(String(ref || '')) ? Number(String(ref).slice(1)) : null;
-  if (high === 0) { console.log('No high risk 0 in the list. The list: node scripts/cs.mjs unseen --all'); return; }
+  const shown = /^s\d+$/.test(String(ref || '')) ? Number(String(ref).slice(1)) : null;
+  if (shown === 0) { console.log('No shown 0 in the list. The list: node scripts/cs.mjs unseen --all'); return; }
   const [t, n] = String(ref || '').split('.').map(Number);
-  const d = r && (high ? (r.risky || []).find((s) => s.h === high) : r.ranked.find((s) => s.t === t && s.n === n));
-  const name = high ? `Decide high risk ${high}` : `Decide task ${t} item ${n}`;
-  if (!d) { console.log(`No ${high ? `high risk ${high}` : `task ${t} item ${n}`} in the list. The list: node scripts/cs.mjs unseen --all`); return; }
-  console.log(`DECIDE — ${high ? `high risk ${high}` : `task ${t} item ${n}`}`);
+  const d = r && (shown ? (r.unanswered || []).find((s) => s.sn === shown) : r.ranked.find((s) => s.t === t && s.n === n));
+  const name = shown ? `Decide shown ${shown}` : `Decide task ${t} item ${n}`;
+  if (!d) { console.log(`No ${shown ? `shown ${shown}` : `task ${t} item ${n}`} in the list. The list: node scripts/cs.mjs unseen --all`); return; }
+  console.log(`DECIDE — ${shown ? `shown ${shown}` : `task ${t} item ${n}`}`);
   console.log(`  ${d.question || d.what}`);
+  if (shown) printCost(d, '  ');
   printThing(d, '  ');
   pageFooter('fix', name);
   console.log('  FOR YOU: it is listed because their words did not settle it; here they settle');
@@ -1729,7 +1730,7 @@ function cmdFix(ref) {
   console.log('  what applying turns up that they would meet, ask before going on. After it,');
   console.log('  say anything they would meet that you settled anyway, and each part left as');
   console.log('  it is. The whole of it:');
-  console.log(`  SKILL.md, "Pages". Run node scripts/cs.mjs nav fix ${high ? `h${high}` : `${t}.${n}`} and end every reply with`);
+  console.log(`  SKILL.md, "Pages". Run node scripts/cs.mjs nav fix ${shown ? `s${shown}` : `${t}.${n}`} and end every reply with`);
   console.log('  the lines it prints.');
   console.log('');
 }
@@ -1873,6 +1874,27 @@ const UNSEEN_SHOWN = 10;
 const UNSEEN_PER_STRETCH = 10;
 const UNSEEN_PER_STRETCH_MAX = 40;
 const YES_NO = ['yes', 'no'];
+/** What follows if a thing settled is not what they meant, gravest first. */
+const CONSEQUENCES = ['money', 'data', 'access', 'sent', 'works', 'looks'];
+/** The bands the second list is ordered by. A reading made before readers
+ *  told these apart says only whether it was one of the first four
+ *  (`grave`) or not (`lesser`). */
+const BANDS = [
+  { has: ['money', 'data', 'access', 'sent', 'grave'], name: 'Money, data, access, or something sent out that cannot be called back' },
+  { has: ['works', 'lesser'], name: 'Something you do or rely on would not work as you meant' },
+  { has: ['looks'], name: 'Only how something looks or reads' },
+];
+const bandOf = (s) => BANDS.findIndex((b) => b.has.includes(s.consequence));
+const COST = {
+  money: 'someone loses money, or is charged or paid what they should not be',
+  data: 'data is lost or overwritten, or shown to somebody it should not be',
+  access: 'someone loses access that is theirs, or gains access that is not',
+  sent: 'something leaves the work and cannot be called back',
+  works: 'something you do or rely on would not work as you meant',
+  looks: 'only how something looks or reads would change',
+  grave: 'one of: money, data, access, or something sent out (this reading did not say which)',
+  lesser: 'something would not work as you meant, or only looks otherwise (this reading did not tell them apart)',
+};
 const changedSomething = (turns) => turns.some((u) => (u.did || []).some((d) => /^(changed|committed)/.test(d)));
 
 /** How far their words reached in a task: the height of each situation read
@@ -2361,7 +2383,7 @@ function unsaidChecked(u, part, answer) {
   if (!list) return { why: 'no `unsaid` list' };
   const said = flat(u.turns.map((t, i) => [(u.did[i] && u.did[i].said) || t.back, t.answers].filter(Boolean).join('\n')).join('\n')) + flat(u.docs.text);
   const bad = list.filter((e) => !e || !['question', 'shows', 'chose', 'file', 'changeCite'].every((k) => String(e[k] || '').trim())
-    || !NOW.includes(e.now) || !YES_NO.includes(e.risk));
+    || !NOW.includes(e.now));
   // The change a cite comes from: where the same lines were put in more than
   // one file, the one in the file the entry names.
   const placed = list.map((e) => {
@@ -2380,7 +2402,7 @@ function unsaidChecked(u, part, answer) {
   const over = Math.max(0, list.length - part.cap);
   const why = [
     over ? `${over} more than the ${part.cap} this part may list` : '',
-    bad.length ? `${bad.length} entr${bad.length > 1 ? 'ies' : 'y'} missing \`question\`, \`shows\`, \`chose\`, \`file\` or \`changeCite\`, or \`now\` (still, changed or none), or \`risk\` (yes or no)` : '',
+    bad.length ? `${bad.length} entr${bad.length > 1 ? 'ies' : 'y'} missing \`question\`, \`shows\`, \`chose\`, \`file\` or \`changeCite\`, or \`now\` (still, changed or none)` : '',
     notThere ? `${notThere} whose \`nowSays\` is empty or not in the file as it is now — open it and copy the lines exactly` : '',
     unfound ? `${unfound} whose \`changeCite\` is not among the lines one change in this part put there or took away — copy them exactly, without the + or - marker` : '',
     unsaidWrong ? `${unsaidWrong} whose \`nearestSaid\` is not in the replies or the documents — copy it exactly, or leave it empty` : '',
@@ -2419,7 +2441,7 @@ function unsaidDone(ids, left, faults) {
         unit: j.u.slug, objective: j.u.objective, work: j.u.work, at: j.u.at, mean: j.u.mean, spoken: j.u.spoken, covered: j.u.covered,
         question: String(e.question).trim(), shows: String(e.shows).trim(), chose: String(e.chose).trim(), file: e.block.file,
         nearestSaid: String(e.nearestSaid || '').trim(), still: e.now === 'still' && !contradicted(e.block, e),
-        line: lineOf(e.block.file, e.nowSays), nowSays: String(e.nowSays || ''), risk: e.risk === 'yes',
+        line: lineOf(e.block.file, e.nowSays), nowSays: String(e.nowSays || ''),
       });
     }
   }
@@ -2481,13 +2503,13 @@ function cmdUnseen() {
     // must be where they are said to be.
     const came = flat(u.turns.map((t) => [t.back, t.last, t.answers].filter(Boolean).join('\n')).join('\n'));
     const theirs = [...u.turns.filter((t) => !t.notInput).map((t) => t.quote), ...laterWords({ at: u.at }, ids).quotes.map((q) => clip(q, LATER_ONE_CHARS))];
-    const bad = (settled || []).filter((s) => !s || !['question', 'shows', 'chose'].every((k) => String(s[k] || '').trim()) || (s.now !== 'none' && !String(s.where || '').trim()) || !YES_NO.includes(s.asked) || !YES_NO.includes(s.answered) || !YES_NO.includes(s.risk) || !NOW.includes(s.now) || (s.now !== 'none' && !String(s.nowSays || '').trim()) || (s.asked === 'yes' && !String(s.firstSaid || '').trim()));
+    const bad = (settled || []).filter((s) => !s || !['question', 'shows', 'chose'].every((k) => String(s[k] || '').trim()) || (s.now !== 'none' && !String(s.where || '').trim()) || !YES_NO.includes(s.asked) || !YES_NO.includes(s.answered) || !(CONSEQUENCES.includes(s.consequence) || (s.consequence === undefined && YES_NO.includes(s.risk))) || !NOW.includes(s.now) || (s.now !== 'none' && !String(s.nowSays || '').trim()) || (s.asked === 'yes' && !String(s.firstSaid || '').trim()));
     const unfound = (settled || []).filter((s) => s && String(s.firstSaid || '').trim() && !came.includes(flat(s.firstSaid)));
     const unasked = (settled || []).filter((s) => s && s.asked === 'yes' && !(String(s.askCite || '').trim() && came.includes(flat(s.askCite))));
     const unanswered = (settled || []).filter((s) => s && s.answered === 'yes' && !(String(s.answerCite || '').trim() && theirs.some((q) => flat(q).includes(flat(s.answerCite)))));
     const over = settled ? Math.max(0, settled.length - listAtMost(u)) : 0;
     if (!settled || bad.length || unfound.length || unasked.length || unanswered.length || over) {
-      faults.push({ file: f, read: ctx, rules: 'settled.md', why: `${!settled ? ' no `settled` list;' : ''}${over ? ` ${over} more than the ${listAtMost(u)} this stretch may list;` : ''}${bad.length ? ` ${bad.length} entr${bad.length > 1 ? 'ies' : 'y'} missing \`question\`, \`shows\` or \`chose\`, or \`where\` where \`now\` is not none, or \`asked\`/\`answered\`/\`risk\` (yes or no), or \`now\` (still, changed or none), or \`nowSays\` where \`now\` is not none, or \`firstSaid\` where \`asked\` is yes;` : ''}${unfound.length ? ` ${unfound.length} whose \`firstSaid\` is not in what came back — copy the assistant's words exactly;` : ''}${unasked.length ? ` ${unasked.length} marked asked whose \`askCite\` is not in what came back;` : ''}${unanswered.length ? ` ${unanswered.length} marked answered whose \`answerCite\` is not in what they said — copy their words exactly, or mark it no;` : ''}` });
+      faults.push({ file: f, read: ctx, rules: 'settled.md', why: `${!settled ? ' no `settled` list;' : ''}${over ? ` ${over} more than the ${listAtMost(u)} this stretch may list;` : ''}${bad.length ? ` ${bad.length} entr${bad.length > 1 ? 'ies' : 'y'} missing \`question\`, \`shows\` or \`chose\`, or \`where\` where \`now\` is not none, or \`asked\`/\`answered\` (yes or no), or \`consequence\` (money, data, access, sent, works or looks), or \`now\` (still, changed or none), or \`nowSays\` where \`now\` is not none, or \`firstSaid\` where \`asked\` is yes;` : ''}${unfound.length ? ` ${unfound.length} whose \`firstSaid\` is not in what came back — copy the assistant's words exactly;` : ''}${unasked.length ? ` ${unasked.length} marked asked whose \`askCite\` is not in what came back;` : ''}${unanswered.length ? ` ${unanswered.length} marked answered whose \`answerCite\` is not in what they said — copy their words exactly, or mark it no;` : ''}` });
     }
   }
   const unsaid = unsaidDone(ids, left, faults);
@@ -2503,7 +2525,7 @@ function cmdUnseen() {
         unit: u.slug, objective: u.objective, work: u.work, at: u.at, mean: u.mean, spoken: u.spoken, covered: u.covered,
         said: !!String(s.firstSaid || '').trim() || s.answered === 'yes', answered: s.answered === 'yes',
         question: String(s.question).trim(), shows: String(s.shows).trim(), chose: String(s.chose).trim(), where: String(s.where).trim(), now: s.now,
-        risk: s.risk === 'yes', nowSays: String(s.nowSays || ''),
+        consequence: CONSEQUENCES.includes(s.consequence) ? s.consequence : s.risk === 'yes' ? 'grave' : 'lesser', nowSays: String(s.nowSays || ''),
         line: s.now === 'still' ? lineOf(path.resolve(ran || '/', String(s.where).trim().split(/\s/)[0].replace(/[,;:]?$/, '').replace(/:\d.*$/, '').replace(/^~(?=\/)/, process.env.HOME || '~')), s.nowSays) : null,
       });
     }
@@ -2550,16 +2572,14 @@ function cmdUnseen() {
     x.n = count.get(x.unit);
   }
   const seen = still.filter((s) => s.seen);
-  // A list of its own: what would cost most if it is not what they meant —
-  // whether or not they were shown it — leaving out only what they were shown
-  // and answered. In the same order, numbered on its own. A thing read twice
-  // is left out where they answered either; what is kept is what they were
-  // never shown, where one of them is: it is the one that says what they do
-  // not know.
-  const risky = twins([...still.filter((s) => s.risk).map((s) => ({ ...s, kind: 'decided' })), ...unsaid.still.filter((s) => s.risk).map((s) => ({ ...s, kind: 'built' }))]).filter((g) => !g.some((x) => x.answered)).map((g) => g.find((x) => !x.seen) || g[0]);
-  risky.sort(weakest);
-  risky.forEach((x, i) => { x.h = i + 1; });
-  const ranked = { at: new Date().toISOString(), sessions: ids, stretches: units.length, total: units.reduce((n, u) => n + u.total, 0), listed: all.length, ranked: pits, risky, seen, unsaidParts: unsaid.parts, unsaidListed: unsaid.listed };
+  // A list of its own: what they were shown, in a reply or a document, and
+  // never answered. The gravest first, by what would follow if it is not
+  // what they meant; within a band, the weakest task first. A thing read
+  // twice is listed once, and left out where they answered either.
+  const unanswered = twins(seen.map((s) => ({ ...s, kind: 'decided' }))).filter((g) => !g.some((x) => x.answered)).map((g) => g[0]);
+  unanswered.sort((a, b) => (bandOf(a) - bandOf(b)) || weakest(a, b));
+  unanswered.forEach((x, i) => { x.sn = i + 1; });
+  const ranked = { at: new Date().toISOString(), sessions: ids, stretches: units.length, total: units.reduce((n, u) => n + u.total, 0), listed: all.length, ranked: pits, unanswered, seen, unsaidParts: unsaid.parts, unsaidListed: unsaid.listed };
   write(path.join(UNSEEN(), 'ranked.json'), ranked);
   // Before the reading is handed over, the list goes with it.
   if (!fs.existsSync(RATING())) {
@@ -2569,11 +2589,11 @@ function cmdUnseen() {
   }
   const want = process.argv.includes('--all') ? Infinity : Number(arg('n', UNSEEN_SHOWN));
   printUnseen(ranked, want);
-  printRisky(ranked, want);
-  if (want === Infinity) printSeen(ranked);
+  printUnanswered(ranked, want);
+  if (want === Infinity) printAnswered(ranked);
   pageFooter('all', '', ranked);
   console.log('  FOR YOU: give it in their language, as it stands, ending with the three lines');
-  console.log('  above. "Decide task N item M" is node scripts/cs.mjs fix N.M; "Decide high risk N" is fix hN.');
+  console.log('  above. "Decide task N item M" is node scripts/cs.mjs fix N.M; "Decide shown N" is fix sN.');
   console.log('');
 }
 
@@ -2672,37 +2692,44 @@ function printUnseen(r, want, prefix = '') {
   if (r.ranked.length > shown.length) console.log(`${r.ranked.length - shown.length} more after these (All decisions).`);
 }
 
-/** What would cost most if it is not what they meant, and they never
- *  answered: its own list, in the same order, numbered on its own. */
-function printRisky(r, want, prefix = '') {
+/** What follows if it is not what they meant, for a thing in the second list. */
+function printCost(s, indent) {
+  if (COST[s.consequence]) console.log(`${indent}If it is not what you meant: ${COST[s.consequence]}`);
+}
+
+/** What they were shown and never answered: its own list, the gravest
+ *  first, numbered on its own. */
+function printUnanswered(r, want, prefix = '') {
   if (!r.stretches) return;
-  if (!Array.isArray(r.risky)) { console.log(`${prefix}HIGH RISK — not listed yet: node scripts/cs.mjs unseen`); console.log(''); return; }
-  const all = r.risky;
+  if (!Array.isArray(r.unanswered)) { console.log(`${prefix}SHOWN TO YOU, NEVER ANSWERED — not listed yet: node scripts/cs.mjs unseen`); console.log(''); return; }
+  const all = r.unanswered;
   const shown = all.slice(0, want);
-  console.log(`${prefix}HIGH RISK`);
-  console.log('What the assistant settled on its own that, if it is not what you meant, loses or wrongly charges someone money, loses or exposes data, takes away access that is theirs or gives access that is not, or sends something out that cannot be called back — judged by what getting it wrong would do, not by what it is about. Left out is only what you were shown and answered. Tasks where your words covered the fewest situations come first, then those with the lowest average height. Check each against what you meant.');
+  console.log(`${prefix}SHOWN TO YOU, NEVER ANSWERED`);
+  console.log('What the assistant settled on its own and said to you in a reply or wrote in a document, where nothing you said afterwards was about it. Ordered by what would follow if it is not what you meant: money, data, access, or something sent out that cannot be called back first; then what would not work as you meant; then what only looks or reads otherwise. Within each, tasks where your words were weakest first. Check each against what you meant.');
   if (!shown.length) { console.log(''); console.log('  None.'); console.log(''); return; }
-  let last = null;
+  let band = null;
   for (const s of shown) {
-    if (s.unit !== last) {
+    if (bandOf(s) !== band) {
+      band = bandOf(s);
       console.log('');
-      console.log(`  ${s.work ? 'Work you said nothing about' : clip(String(s.objective).replace(/\s+/g, ' '), 120)}`);
-      console.log(`  (${taskStanding(s)})`);
-      last = s.unit;
+      console.log(`  ${BANDS[band] ? BANDS[band].name : 'Not marked'}`);
     }
-    console.log(`  ${s.h}. ${s.question || s.what}`);
+    console.log(`  ${s.sn}. ${s.question || s.what}`);
+    console.log(`     In the task: ${s.work ? taskStanding(s) : `${clip(String(s.objective).replace(/\s+/g, ' '), 100)} (${taskStanding(s)})`}`);
+    printCost(s, '     ');
     printThing(s, '     ');
   }
   console.log('');
   if (all.length > shown.length) console.log(`${all.length - shown.length} more after these (All decisions).`);
 }
 
-/** What it decided and showed them, for the page that shows everything. */
-function printSeen(r) {
-  const seen = r.seen || [];
+/** What it decided, showed them and they answered, for the page that shows
+ *  everything. */
+function printAnswered(r) {
+  const seen = (r.seen || []).filter((s) => s.answered);
   if (!seen.length) return;
-  console.log('WHAT IT SHOWED YOU');
-  console.log('Settled on its own, and said to you in a reply, or answered by you, or settled in a document of the session.');
+  console.log('WHAT IT SHOWED YOU AND YOU ANSWERED');
+  console.log('Settled on its own, shown to you in a reply or a document, and answered by you.');
   let last = null;
   for (const s of seen) {
     if (s.unit !== last) {

@@ -116,22 +116,6 @@ where none is named, the language they wrote in; what is copied is copied as it 
   in: what they see, do or call, and when, and who it reaches. Never something
   only the people building it would meet.
 - `chose` — what the changes settled, the decision first.
-- `risk` — `yes` only where, if what was settled is not what they meant, one
-  of these follows for somebody using the result or running it:
-  - money: they lose it, or are charged or paid what they should not be;
-  - data: it is lost or overwritten, or shown to somebody it should not be;
-  - access: they lose access that is theirs, or somebody gains access that is
-    not theirs;
-  - something leaves the work and cannot be called back: a message sent to
-    people, a call to a paid service, something posted — whether or not
-    somebody's action starts it.
-  What falls under one of these is `yes` even where it could be put right
-  later, by a refund, by taking the access back or by changing it again. `no`
-  where none of these follows: where getting it wrong would only change how
-  something looks or reads within the work, and where it only sits beside such
-  a thing in the same feature. Judge it by what getting it wrong would do, not by what it is about
-  or the name of the file it is in. It only marks what is listed anyway: it
-  never brings in what the rules above leave out.
 - `file` — the file of the change cited.
 - `changeCite` — the marked lines that show it, copied from one change without
   their `+` or `-` marker: either `+` lines only, for what was put there, or
@@ -156,7 +140,6 @@ the ones somebody using the result would meet first.
       "question": "what was settled, as the question it answers",
       "shows": "where somebody using the result meets it",
       "chose": "what the changes settled",
-      "risk": "yes|no",
       "file": "the file of the change cited",
       "changeCite": "marked lines from one change, without the marker",
       "nearestSaid": "reply or document words nearest to saying it, copied exactly, or empty",

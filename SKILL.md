@@ -1,14 +1,15 @@
 ---
 name: vibe-coding-blindspot-checker
-description: Find the blind spots in a vibe coding session: what a coding agent (today Claude Code, Cursor, Codex, Gemini CLI, Antigravity, or any agent's plain-text transcript) decided on its own that the person never decided and was never shown, still in the work now, with where it is. Tasks where their words were weakest on The Command Scale v1.0 come first; a second list holds what would cost most if it is not what they meant. Each is theirs to decide on the spot. The session is also rated on the scale, adding up across audits. Use when a coding session has ended and someone wants it checked, asks what the agent decided without them, wants to review what an agent built, or asks where they stand on the scale. Reading costs model calls for each task. The program needs no key and opens no connection; the record is read by the assistant already in use, so what it reads goes to that assistant's model provider under the terms already in place.
+description: Find the blind spots in a vibe coding session: what a coding agent (today Claude Code, Cursor, Codex, Gemini CLI, Antigravity, or any agent's plain-text transcript) decided on its own that the person never decided and was never shown, still in the work now, with where it is. Tasks where their words were weakest on The Command Scale v1.0 come first; a second list holds what it showed them and they never answered, the gravest first if it is not what they meant. Each is theirs to decide on the spot. The session is also rated on the scale, adding up across audits. Use when a coding session has ended and someone wants it checked, asks what the agent decided without them, wants to review what an agent built, or asks where they stand on the scale. Reading costs model calls for each task. The program needs no key and opens no connection; the record is read by the assistant already in use, so what it reads goes to that assistant's model provider under the terms already in place.
 ---
 
 # Auditing an AI coding session with The Command Scale
 
 After a session with an AI coding assistant, this finds what the assistant
 settled on its own — what the person's words never settled — and never showed
-them, in a reply or in a document, and, on a list of its own, what would cost
-most if it is not what they meant, unless they answered it — so they can check
+them, in a reply or in a document, and, on a list of its own, what it showed
+them and they never answered, the gravest first by what would follow if it is
+not what they meant — so they can check
 each against what they meant and settle it themselves there and then. Which come first is read off The Command
 Scale: where their words in a task were weakest, the assistant settled the
 most. Weakest is first where their words spoke in the fewest of the four
@@ -78,8 +79,8 @@ language, and `next` asks again while they are unwritten; the program then fills
 report, then stop.** `rating` prints the report, and it goes to them in one
 reply, in their language, their own words as they are. It opens with how
 many things the assistant settled on its own, how many of them it showed them,
-how many are left, and how many are high risk and never answered by them (all
-of them, not only the ten the report shows), and has four parts:
+how many are left, and how many of those it showed them they never answered
+(all of them, not only the ten the report shows), and has four parts:
 
 - the TCS rating for this session — for each situation, the average height
   their words reached in this session; beside it, the same average over every
@@ -94,10 +95,11 @@ of them, not only the ten the report shows), and has four parts:
   settled, and where it is in the work — the file and lines, as the program
   finds them in the file now; for what it built in, also the words a reply or a
   document said nearest to it.
-- what is high risk, described below: a list of its own, chosen by another
-  rule, in the same task order, numbered from 1 through the whole list, each
-  given the same way; where a reply or a document showed it to them, also
-  that they never answered it.
+- what it showed them and they never answered, described below: a list of its
+  own, the gravest first, under a heading for each band, numbered from 1
+  through the whole list, each given the same way, with the task it is from,
+  what would follow if it is not what they meant, and that they never
+  answered it.
 - what they can type next: the last lines, as on every page (below).
 
 Then stop. What to do next is theirs to say, by typing one of the words on the
@@ -124,7 +126,7 @@ alike.
 | Lowest lines | `node scripts/cs.mjs lowest` | Lowest lines — the lines of theirs in this session that settled least |
 | Audit another session | `node scripts/cs.mjs list`, then on "Audit session N", `import --take N` and `next` | Audit another session, then that session's report |
 | Decide task N item M | `node scripts/cs.mjs fix N.M` | Decide |
-| Decide high risk N | `node scripts/cs.mjs fix hN` | Decide |
+| Decide shown N | `node scripts/cs.mjs fix sN` | Decide |
 | Read this audit again | `node scripts/cs.mjs unseen --again`, then the briefs it prints, then `unseen --all` | All decisions |
 | Trace line N | `node scripts/cs.mjs probe N` | Trace |
 | Decide line N point M | the point as `probe` printed it | Decide |
@@ -153,8 +155,8 @@ and say in a few sentences, in their language, how that part works now and
 where this decision sits in it — what they would see or do, not how the code is
 written. Say that you wrote it from the code as it is now, and that it costs
 reading that part of the work. Then ask again what they want, and stop. While
-deciding, run `node scripts/cs.mjs nav fix N.M` (or `nav fix hN` for a
-high-risk item, or `nav fix line N.M` for a point from a trace) and end each
+deciding, run `node scripts/cs.mjs nav fix N.M` (or `nav fix sN` for one
+they were shown and never answered, or `nav fix line N.M` for a point from a trace) and end each
 reply with the lines it prints.
 
 **Trace the lines they name, then stop again.** `probe 1,3` sets up each
@@ -184,8 +186,7 @@ work, what is there now and whether it is still as decided. The program checks
 the words cited and keeps what is still there. What a reply said to them, what
 they answered, and what was settled in a document of the session itself, they
 were shown: the report counts it and does not list it among what they may
-not know; what is high risk and was never answered by them is listed in the
-high-risk list. It is part of every audit, and the cost
+not know; what of it they never answered is listed in the second list. It is part of every audit, and the cost
 `list` gives counts it: one more reading for each task.
 
 **What it built in without saying it.** The decisions above are read from what
@@ -221,25 +222,44 @@ the one that comes first in this order. An entry read from what was written
 stays even where a decision at the same lines was shown to them, because what
 it says is what no reply or document said. Where it is unclear, both stay.
 
-**What is high risk.** A second list, chosen by its own rule: not what a
-thing is about but what getting it wrong would do to somebody using the result
-or running it: they lose money, or are charged or paid what they should not
-be; data is lost or overwritten, or shown to somebody it should not be; they
-lose access that is theirs, or somebody gains access that is not theirs; or
-something leaves the work and cannot be called back — a message sent to
-people, a call to a paid service, something posted. Any of these is high risk
-even where it could be put right later; what only looks or reads otherwise
-within the work is not. The readers mark it. Whether they were shown it does
-not decide it: what a reply or a document showed them is still listed, and
-only what they were shown and answered is left out. It is ordered by task in
-the same order as the first list. A thing read twice is listed once here too,
-by the same rule; of the two, what is kept is the one they were never shown,
-where there is one, and where they answered either, both are left out. A thing
-can be in both lists.
+**What it showed them and they never answered.** A second list: what the
+assistant settled on its own and said to them in a reply, or wrote in a
+document of the session, where nothing they said afterwards was about it. A
+bare yes or a choice answers only what the message right before it put to
+them to decide, never one line inside a longer report. What they were never
+shown is in the first list, and what they answered is in neither list, except
+what it built in, which stays in the first list (above).
+
+It is ordered by what would follow if the thing is not what they meant, which
+the readers mark on each, in three bands:
+
+1. money, data, access, or something sent out that cannot be called back —
+   someone loses money, or is charged or paid what they should not be; data is
+   lost or overwritten, or shown to somebody it should not be; someone loses
+   access that is theirs, or gains access that is not; or a message, a call
+   to a paid service or a post leaves the work. These four are one band, even
+   where it could be put right later;
+2. something somebody using the result does or relies on would not work as
+   they meant, or they would believe something that is not so;
+3. only how something looks or reads would change, and nobody would do or
+   believe anything differently.
+
+Each is marked by what follows directly, not by what could follow through
+some further failure. What a message, call or post says counts with its
+going out; what a paid service charges whoever runs the work counts as
+money.
+
+Within a band, the weakest task first, by the same rule as the first list. A
+reading made before the readers marked the band says only whether a thing was
+one of the first four; the rest of it is then in the second band, and its
+entry says that the two were not told apart. A thing read twice is listed
+once, by the rule the first list uses, and left out where they answered
+either.
 
 The report shows the first ten of each; "All decisions" shows both lists
-whole, and after them what it showed them. The lists say what they may not
-know and what would cost most if it is not what they meant, not what is wrong;
+whole, and after them what it showed them and they answered. The lists say
+what they may not know and what they were shown and never answered, not what
+is wrong;
 whether each is what they meant is theirs to say.
 
 **Who reads what it decided and what it built in.** Not you. The assistant that did the
