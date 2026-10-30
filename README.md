@@ -1,6 +1,8 @@
 # vibe-coding-blindspot-checker
 
-**Every vague request is a blank check. This shows you what your coding agent wrote on yours.**
+**After a coding session, see what your agent decided that you never did — with the file and the line.**
+
+Every vague request is a blank check. This shows you what your coding agent wrote on yours.
 
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-standard-green)](https://agentskills.io)
 [![skills.sh](https://img.shields.io/badge/skills.sh-compatible-blue)](https://skills.sh)
@@ -9,11 +11,18 @@
 [![Conformance](https://github.com/yabeiz/vibe-coding-blindspot-checker/actions/workflows/conformance.yml/badge.svg)](https://github.com/yabeiz/vibe-coding-blindspot-checker/actions/workflows/conformance.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0%20%2B%20CC--BY--4.0-lightgrey)](#license)
 
-Run it when a coding session ends. It reads what you and your agent said, and finds:
+<!-- HERO: assets/hero.gif goes here once approved -->
 
-- **What your agent decided on its own** — the decisions your words never made and no reply or document ever showed you, still in your code now, with the file and the line.
-- **Where your words left them open.** Every task is read against [The Command Scale](https://github.com/farsurf/command-scale): in how many of four situations your words spoke, and how high they reached. Where your words were weakest, the agent decided the most — so that is where the list starts.
-- **What your agent told you and you never answered** — a decision it put in a reply or a document, that you let pass. On a list of its own, the gravest first: money, data, access, or something sent that cannot be called back, then what would not work as you meant, then what only looks different.
+```bash
+npx skills add yabeiz/vibe-coding-blindspot-checker
+```
+
+Then, when a session ends, tell your agent: **`Check my last coding session for blind spots.`** ([Other ways to install](#install))
+
+It reads what you and your agent said and what ended up in your code, and gives you two lists:
+
+- **What your agent decided that you never did.** Never in a reply, never in a document, still in your code now, with the file and the line. Tasks where your instructions said least, measured on [The Command Scale](https://github.com/farsurf/command-scale), come first: that is where your agent decided most.
+- **What your agent told you and you never answered.** A decision it mentioned in passing and you let go by. The ones that touch money, data, access, or something sent that cannot be called back come first.
 
 Then each one is yours to decide, on the spot. The agent does not get to decide it a second time.
 
@@ -151,7 +160,9 @@ Claude Code deletes session records after 30 days by default. To audit older wor
 
 ## What it costs
 
-Looking at results costs nothing. Reading a session does: the agent you already use does the reading, with helper agents that start from a clean context, so it spends your own plan's allowance or tokens. For scale: one real three-day session — 10 tasks, about 10,000 lines changed — took about 17 minutes and about 3.4 million tokens of helper reading on Claude. It tells you what a reading would cost before it starts.
+Looking at results costs nothing. Reading a session does: the agent you already use does the reading, with helper agents that start from a clean context, so it spends your own plan's allowance or tokens.
+
+The cost is counted in readings: one for each task, and one for each large piece of code a task wrote. In our runs on Claude a reading took about 70,000 to 130,000 tokens. A short session is a few readings. The largest we have run, a three-day session with 10 tasks and about 10,000 lines changed, took about 17 minutes and about 3.4 million tokens. It tells you how many readings each conversation needs before it starts, and you pick which to read.
 
 It works best in an agent that can start helper agents (Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Copilot, Kiro). Where it cannot, it reads one piece at a time, which is slower.
 

@@ -2,6 +2,12 @@
 
 Does this find what code review finds? No. Does it find something code review does not? Yes, and it is a different kind of thing. This page is how we know, and how far that goes.
 
+**In short**
+
+- **They barely overlap.** On two real sessions, 8 and 4 of code review's items were also on this checker's lists.
+- **They find different things.** In the session sorted by hand, everything code review found and this missed was a bug; everything only this found was a product decision nobody had made, such as whether an admin reviewing an appeal sees the rest of the conversation.
+- **Most of what this lists is right as it is, and that is the point.** It lists what was decided for you. In session B, 25 of the 40 items sampled from it were real and never settled by the person; most of them they would keep. Whether each is what you meant is yours to say. Bugs are code review's job, and it is better at them.
+
 ## What was compared
 
 Two real Claude Code sessions in October 2026, by the author, on a web platform the author builds:
@@ -31,7 +37,7 @@ From this checker, 40 items per session: the top 10 of each of its two lists, an
 
 ## Results
 
-"Would want it changed":
+The judges' last question, "would the person want it changed", is a bug finder's measure, and code review wins it:
 
 | | Session A | Session B |
 | --- | --- | --- |
@@ -46,7 +52,7 @@ From this checker, 40 items per session: the top 10 of each of its two lists, an
 - **Little overlap.** Of code review's items, 8 in session A and 4 in session B were also on this checker's lists, none of them in either list's top 10.
 - **What code review found and this missed is a bug.** In session A, code review's real problems were sorted by hand into two kinds: code that does not do what its own comments, constants or other code already state (16), and a design choice whose rightness depends on what the person wanted (4). Every one this checker missed was of the first kind. It found all four of the second kind, but ranked them 19th or lower.
 - **What only this found is a decision.** Session A: 4 that no other tool reported, all product rules, such as whether an admin reviewing an appeal sees the rest of the conversation, and whether a dismissed appeal is ever told to its sender. Session B: 2, such as how page owners are charged for translation and in which regions a recommendation setting is on by default.
-- **Most of what this lists is not wrong.** The blind check found most of its items real and never settled by the person, and most of them things the person would keep. That is what it is for: it shows what was decided for you, and only you can say whether it is what you meant.
+- **Most of what this lists is not wrong.** In session B, 27 of the 40 items sampled from it were really in the code and 25 were never settled by the person; most of them the person would keep. That is what it is for: it shows what was decided for you, and only you can say whether it is what you meant.
 
 ## What changed because of it
 
