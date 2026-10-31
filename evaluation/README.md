@@ -6,7 +6,7 @@ Does this find what code review finds? No. Does it find something code review do
 
 - **They barely overlap.** On two real sessions, 8 and 4 of code review's items were also on this checker's lists.
 - **They find different things.** In the session sorted by hand, everything code review found and this missed was a bug; everything only this found was a product decision nobody had made, such as whether an admin reviewing an appeal sees the rest of the conversation.
-- **Most of what this lists, the agent guessed right.** It lists what was decided for you; in session B, 25 of the 40 items sampled from it were real and never settled by the person, and most of them the person would keep. Those you keep and move on. **But do not stop at the top:** in session A, the top 10 of the first list held none the person would change, while 10 picked at random from further down held 5. The list starts where your words said least, which is not always where the agent guessed wrong.
+- **Most of what this lists, the agent guessed right.** It lists what was decided for you; in session B, 25 of the 40 items sampled from it were real and never settled by the person, and most of them the person would keep. Those you keep and move on.
 - **Bugs are code review's job, and it is better at them.**
 
 ## What was compared
@@ -66,6 +66,7 @@ The judges' last question, "would the person want it changed", is a bug finder's
 - "Would want it changed" is a model's judgment, with the person's own words as what they meant.
 - The isolated repositories were rebuilt from the session's commits and missed a few files. That made one of code review's items in session A and both of vet's default reports false; they are counted as found, not as problems.
 - The checker compared is the version before its second list changed.
+- The first list starts where the person's words said least, not where a mismatch is likeliest. In session A its top 10 held none the person would change; 10 picked at random from further down held 5.
 - Reading the same session twice is not identical: a second reading of session A changed about a fifth of the first list (18 out, 13 in, of about 90). Its top 10 did not change.
 - Cost, session A: this checker about 3.4 million tokens of helper reading; code review about 0.3 million.
 

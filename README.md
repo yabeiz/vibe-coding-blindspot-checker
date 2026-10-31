@@ -13,19 +13,28 @@ You cannot know in advance what a model needs spelled out, and the answer change
 
 <!-- HERO: assets/hero.gif goes here once approved -->
 
+## How to use it
+
+1. **Ask in a line.** Say what you want and let your agent build it. Skip the spec.
+2. **When the session ends, check it.** Tell your agent: **`Check my last coding session for blind spots.`**
+3. **Read the top ten**, and let them tell you what to do next:
+   - **They are what you meant.** The agent guessed right. Close the session.
+   - **They are far from what you meant.** Patching will not fix it: rethink what you asked for, and ask again.
+   - **Some are off.** Settle those few on the spot: you say what each should be, and the agent changes nothing until you say `Apply`.
+
 ```bash
 npx skills add yabeiz/vibe-coding-blindspot-checker
 ```
 
-Then, when a session ends, tell your agent: **`Check my last coding session for blind spots.`** ([Other ways to install](#install))
+([Other ways to install](#install))
+
+## What it shows you
 
 It reads what you and your agent said and what ended up in your code, and gives you:
 
 - **What your agent decided that you never did.** Never in a reply, never in a document, still in your code now, with the file and the line. It starts where your words said least, because that is where the agent had to guess most.
 - **What your agent told you and you never answered** — a decision it mentioned in passing and you let go by. The ones that touch money, data, access, or something sent that cannot be called back come first.
 - **A rating of your words in this session**, on [The Command Scale](https://github.com/farsurf/command-scale): asking for something, reviewing what came back, saying you are stuck, asking a question. Reviewing counts as much as asking. It rates the session, never you, and adds up across sessions.
-
-**Then read from the top.** Where it guessed what you meant, keep it. Where it is far from what you meant, the request needs rethinking, not patching. Where it is close, settle the few that are off, there and then: you say what each should be, and the agent changes nothing until you say `Apply`.
 
 Claude Code's `/insights` and YC's Paxel tell you how you work with AI. This tells you what your last session left in your code, and lets you settle it.
 
