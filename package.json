@@ -8,7 +8,7 @@
   "author": "Yabei Z. (https://github.com/yabeiz)",
   "homepage": "https://github.com/yabeiz/vibe-coding-blindspot-checker",
   "repository": { "type": "git", "url": "https://github.com/yabeiz/vibe-coding-blindspot-checker.git" },
-  "keywords": ["agent-skills", "claude-code", "cursor", "codex", "gemini-cli", "vibe-coding", "code-review", "command-scale"],
+  "keywords": ["agent-skills", "claude-code", "cursor", "codex", "gemini-cli", "vibe-coding", "spec-driven-development", "command-scale"],
   "engines": { "node": ">=18" },
   "scripts": {
     "conformance": "node conformance/run.mjs"
