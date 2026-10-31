@@ -6,7 +6,8 @@ Does this find what code review finds? No. Does it find something code review do
 
 - **They barely overlap.** On two real sessions, 8 and 4 of code review's items were also on this checker's lists.
 - **They find different things.** In the session sorted by hand, everything code review found and this missed was a bug; everything only this found was a product decision nobody had made, such as whether an admin reviewing an appeal sees the rest of the conversation.
-- **Most of what this lists is right as it is, and that is the point.** It lists what was decided for you. In session B, 25 of the 40 items sampled from it were real and never settled by the person; most of them they would keep. Whether each is what you meant is yours to say. Bugs are code review's job, and it is better at them.
+- **Most of what this lists, the agent guessed right.** It lists what was decided for you; in session B, 25 of the 40 items sampled from it were real and never settled by the person, and most of them the person would keep. Those you keep and move on. **But do not stop at the top:** in session A, the top 10 of the first list held none the person would change, while 10 picked at random from further down held 5. The list starts where your words said least, which is not always where the agent guessed wrong.
+- **Bugs are code review's job, and it is better at them.**
 
 ## What was compared
 

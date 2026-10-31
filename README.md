@@ -1,8 +1,8 @@
 # vibe-coding-blindspot-checker
 
-**Claude Code's `/insights` and YC's Paxel tell you how you work with AI. This tells you what to fix after each session.**
+**Don't write the spec. Ask in a line, let your agent build, then see what it decided for you.**
 
-Every vague request is a blank check. This shows you what your coding agent wrote on yours.
+You cannot know in advance what a model needs spelled out, and the answer changes with every model. So say little up front and spend your attention after: when a session ends, this shows you what your coding agent decided that you never did, down to the file and the line.
 
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-standard-green)](https://agentskills.io)
 [![skills.sh](https://img.shields.io/badge/skills.sh-compatible-blue)](https://skills.sh)
@@ -19,17 +19,19 @@ npx skills add yabeiz/vibe-coding-blindspot-checker
 
 Then, when a session ends, tell your agent: **`Check my last coding session for blind spots.`** ([Other ways to install](#install))
 
-When a session ends, it reads what you and your agent said and what ended up in your code, and gives you:
+It reads what you and your agent said and what ended up in your code, and gives you:
 
-- **A rating of your words in this session**, on [The Command Scale](https://github.com/farsurf/command-scale): in each of four situations — asking for something, reviewing what came back, saying you are stuck, asking a question — how far your words went. It rates the session, never you, and adds up across sessions, so you can see whether yours are getting better.
-- **What your agent decided that you never did**, starting where your words were weakest, because that is where it decided most for you. Never in a reply, never in a document, still in your code now, with the file and the line.
+- **What your agent decided that you never did.** Never in a reply, never in a document, still in your code now, with the file and the line. It starts where your words said least, because that is where the agent had to guess most.
 - **What your agent told you and you never answered** — a decision it mentioned in passing and you let go by. The ones that touch money, data, access, or something sent that cannot be called back come first.
+- **A rating of your words in this session**, on [The Command Scale](https://github.com/farsurf/command-scale): asking for something, reviewing what came back, saying you are stuck, asking a question. Reviewing counts as much as asking. It rates the session, never you, and adds up across sessions.
 
-Then each one is yours to decide, on the spot. The agent does not get to decide it a second time.
+**Then read from the top.** Where it guessed what you meant, keep it. Where it is far from what you meant, the request needs rethinking, not patching. Where it is close, settle the few that are off, there and then: you say what each should be, and the agent changes nothing until you say `Apply`.
+
+Claude Code's `/insights` and YC's Paxel tell you how you work with AI. This tells you what your last session left in your code, and lets you settle it.
 
 ## What a report looks like
 
-An excerpt from a real audit: a three-day Claude Code session that added direct messages, a reports page for admins and edit requests to a web app. Paths are shortened; `…` marks what is left out.
+An excerpt from a real report: a three-day Claude Code session that added direct messages, a reports page for admins and edit requests to a web app. Paths are shortened; `…` marks what is left out.
 
 ```text
 AUDIT REPORT — 9 tasks in this session
