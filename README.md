@@ -1,8 +1,8 @@
 # vibe-coding-blindspot-checker
 
-**Don't write the spec. Ask in a line, let your agent build, then see what it decided for you.**
+**Don't write the spec. Say what only you know, let your agent build, then see what it decided for you.**
 
-The most leverage you get from a coding agent is right at the edge of what it can do: say little where it is fluent, and more only where it is not. Nobody knows where that edge is, and it moves with every model. So stop planning against a guess. Ask in a line, and find the edge after: when a session ends, this shows you what your agent decided that you never did, down to the file and the line.
+The most leverage you get from a coding agent is right at the edge of what it can do: say little where it is fluent, and more only where it is not. Nobody knows where that edge is, and it moves with every model. So stop planning against a guess. Say what only you know, and find the edge after: when a session ends, this shows you what your agent decided that you never did, down to the file and the line.
 
 **Who this is for:** people who already build with coding agents every day and can tell whether what came back is right. It is not for learning to code, and it does not look for bugs.
 
@@ -17,7 +17,7 @@ The most leverage you get from a coding agent is right at the edge of what it ca
 
 ## How to use it
 
-1. **Ask in a line.** Say what you want and let your agent build it. Skip the spec.
+1. **Say what only you know.** Skip the spec: leave the agent whatever it can work out for itself.
 2. **When the session ends, check it.** Tell your agent: **`Check my last coding session for blind spots.`**
 3. **Read the top ten**, and let them tell you what to do next:
    - **They are what you meant.** The agent guessed right. Close the session.
@@ -110,7 +110,7 @@ All of these read your work. They answer different questions.
 | Spec-first tools (e.g. [spec-kit](https://github.com/github/spec-kit)) | your plan, before the agent builds | a spec the agent follows: you settle everything up front |
 | [Paxel](https://paxel.ycombinator.com) (YC) | your sessions | a profile of how you work with AI |
 | Claude Code `/insights` | your sessions | a report on your habits and workflow |
-| **vibe-coding-blindspot-checker** | **your sessions and your code** | **what your one-line asks left to the agent, down to the file and line: you settle, after, only what it guessed wrong** |
+| **vibe-coding-blindspot-checker** | **your sessions and your code** | **what your short asks left to the agent, down to the file and line: you settle, after, only what it guessed wrong** |
 | Code review (e.g. Claude Code's review, open-code-review) | the diff | bugs: does the code do what it is meant to |
 
 A spec settles everything before the agent starts, including what it would have got right on its own. This lets the agent go first and asks you only about what it decided. It does not look for bugs: run code review too, and let your agent fix what it finds. On two real sessions run through both, the two barely overlapped. [The comparison, with its limits.](evaluation/README.md)
