@@ -1,8 +1,8 @@
 {
   "name": "yabeiz",
-  "description": "Agent skills by Yabei Z.: skip the spec, then check what your coding agent decided for you.",
+  "description": "Agent skills by Yabei Z: skip the spec, then check what your coding agent decided for you.",
   "owner": {
-    "name": "Yabei Z.",
+    "name": "Yabei Z",
     "url": "https://github.com/yabeiz"
   },
   "plugins": [

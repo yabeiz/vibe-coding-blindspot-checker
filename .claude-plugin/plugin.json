@@ -2,7 +2,7 @@
   "name": "vibe-coding-blindspot-checker",
   "description": "Skip the spec: say what only you know, and after the session see what your coding agent decided that you never did, down to the file and line. Read the top ten, then close, rethink or fix.",
   "version": "0.1.0",
-  "author": { "name": "Yabei Z.", "url": "https://github.com/yabeiz" },
+  "author": { "name": "Yabei Z", "url": "https://github.com/yabeiz" },
   "homepage": "https://github.com/yabeiz/vibe-coding-blindspot-checker",
   "repository": "https://github.com/yabeiz/vibe-coding-blindspot-checker",
   "license": "Apache-2.0",

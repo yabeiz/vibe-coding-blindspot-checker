@@ -5,7 +5,7 @@
   "type": "module",
   "private": true,
   "license": "Apache-2.0 AND CC-BY-4.0",
-  "author": "Yabei Z. (https://github.com/yabeiz)",
+  "author": "Yabei Z (https://github.com/yabeiz)",
   "homepage": "https://github.com/yabeiz/vibe-coding-blindspot-checker",
   "repository": { "type": "git", "url": "https://github.com/yabeiz/vibe-coding-blindspot-checker.git" },
   "keywords": ["agent-skills", "claude-code", "cursor", "codex", "gemini-cli", "vibe-coding", "code-review",
