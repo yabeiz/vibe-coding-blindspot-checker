@@ -22,6 +22,6 @@ jobs:
       - name: the skills installer finds the skill
         if: matrix.os == 'ubuntu-latest' && matrix.node == 22
         run: |
-          out=$(npx -y skills add . --list 2>&1)
+          out=$(NO_COLOR=1 npx -y skills add . --list 2>&1 | sed 's/\x1b\[[0-9;]*m//g')
           echo "$out"
           echo "$out" | grep -F "Found 1 skill"
