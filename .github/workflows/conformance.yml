@@ -19,3 +19,6 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: node --check scripts/cs.mjs
       - run: node conformance/run.mjs
+      - name: the skills installer finds the skill
+        if: matrix.os == 'ubuntu-latest' && matrix.node == 22
+        run: npx -y skills add . --list 2>&1 | tee /dev/stderr | grep -q "Found 1 skill"
