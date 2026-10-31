@@ -2,7 +2,9 @@
 
 **Don't write the spec. Ask in a line, let your agent build, then see what it decided for you.**
 
-You cannot know in advance what a model needs spelled out, and the answer changes with every model. So say little up front and spend your attention after: when a session ends, this shows you what your coding agent decided that you never did, down to the file and the line.
+The most leverage you get from a coding agent is right at the edge of what it can do: say little where it is fluent, and more only where it is not. Nobody knows where that edge is, and it moves with every model. So stop planning against a guess. Ask in a line, and find the edge after: when a session ends, this shows you what your agent decided that you never did, down to the file and the line.
+
+**Who this is for:** people who already build with coding agents every day and can tell whether what came back is right. It is not for learning to code, and it does not look for bugs.
 
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-standard-green)](https://agentskills.io)
 [![skills.sh](https://img.shields.io/badge/skills.sh-compatible-blue)](https://skills.sh)
@@ -19,7 +21,7 @@ You cannot know in advance what a model needs spelled out, and the answer change
 2. **When the session ends, check it.** Tell your agent: **`Check my last coding session for blind spots.`**
 3. **Read the top ten**, and let them tell you what to do next:
    - **They are what you meant.** The agent guessed right. Close the session.
-   - **They are far from what you meant.** Patching will not fix it: rethink what you asked for, and ask again.
+   - **They are far from what you meant.** You went past the edge. Patching will not fix it: rethink what you asked for, spell out the part the agent could not guess, and ask again.
    - **Some are off.** Settle those few on the spot: you say what each should be, and the agent changes nothing until you say `Apply`.
 
 ```bash
@@ -34,7 +36,7 @@ It reads what you and your agent said and what ended up in your code, and gives 
 
 - **What your agent decided that you never did.** Never in a reply, never in a document, still in your code now, with the file and the line. It starts where your words said least, because that is where the agent had to guess most.
 - **What your agent told you and you never answered** — a decision it mentioned in passing and you let go by. The ones that touch money, data, access, or something sent that cannot be called back come first.
-- **A rating of your words in this session**, on [The Command Scale](https://github.com/farsurf/command-scale): asking for something, reviewing what came back, saying you are stuck, asking a question. Reviewing counts as much as asking. It rates the session, never you, and adds up across sessions.
+- **A rating of this session**, on [The Command Scale](https://github.com/farsurf/command-scale), in four situations: asking for something, reviewing what came back, saying you are stuck, asking a question. The scale does not reward saying more. Its top level, in its own words, "is not more specification": the brevity is chosen, minimal where the model is fluent and broken down where it is not. Each check shows you where your few words were enough, and the ratings add up across sessions, because the edge can only be found over many of them. It rates sessions, never people.
 
 Claude Code's `/insights` and YC's Paxel tell you how you work with AI. This tells you what your last session left in your code, and lets you settle it.
 
@@ -105,17 +107,13 @@ All of these read your work. They answer different questions.
 
 | | What it reads | What you get |
 | --- | --- | --- |
+| Spec-first tools (e.g. [spec-kit](https://github.com/github/spec-kit)) | your plan, before the agent builds | a spec the agent follows: you settle everything up front |
 | [Paxel](https://paxel.ycombinator.com) (YC) | your sessions | a profile of how you work with AI |
 | Claude Code `/insights` | your sessions | a report on your habits and workflow |
-| **vibe-coding-blindspot-checker** | **your sessions and your code** | **a rating of your words in each session, and what to do about it: the decisions your agent made for you, starting where your words were weakest, down to the file and line — a list you can act on today** |
-| Code review (e.g. Claude Code's review, open-code-review) | the diff | bugs in the code: does the code do what it is meant to |
+| **vibe-coding-blindspot-checker** | **your sessions and your code** | **what your one-line asks left to the agent, down to the file and line: you settle, after, only what it guessed wrong** |
+| Code review (e.g. Claude Code's review, open-code-review) | the diff | bugs: does the code do what it is meant to |
 
-Paxel and `/insights` tell you how you work; this tells you what that left in your code, and lets you settle it. None of the three looks for bugs, so run it after code review, not instead of it:
-
-1. **Run code review first, and let your agent fix what it finds.** Those are bugs: the code does not do what it is meant to. They need no decision from you.
-2. **Then run this.** What it lists is not bugs. Most of it works exactly as written; what it shows you is what your agent decided for you. Whether each is what you meant only you can say.
-
-On two real sessions run through both, the two barely overlapped. In the one sorted by hand, everything code review found and this missed was a bug, and everything only this found was a product decision nobody had made. [The comparison, with its limits.](evaluation/README.md)
+A spec settles everything before the agent starts, including what it would have got right on its own. This lets the agent go first and asks you only about what it decided. It does not look for bugs: run code review too, and let your agent fix what it finds. On two real sessions run through both, the two barely overlapped. [The comparison, with its limits.](evaluation/README.md)
 
 ## Install
 
@@ -168,7 +166,7 @@ It first shows you which conversations it found and what reading each would cost
 
 It reads the records these agents keep on your machine: **Claude Code** (`~/.claude/projects`), **Cursor** (`~/.cursor/projects`), **Codex** (`~/.codex/sessions`), **Gemini CLI** (`~/.gemini/tmp`) and **Antigravity** (`~/.gemini/antigravity*/brain`). A conversation from any other tool can be read once it is saved as plain text with each side marked (`Me: …` / `AI: …`).
 
-Claude Code deletes session records after 30 days by default. To audit older work, raise `cleanupPeriodDays` in your Claude Code settings before the records are gone.
+Claude Code deletes session records after 30 days by default. To check older work, raise `cleanupPeriodDays` in your Claude Code settings before the records are gone.
 
 ## What it costs
 
@@ -192,7 +190,7 @@ The reading itself is done by the assistant you are already using, so what it re
 4. What you were never told goes on the first list: tasks where your words spoke in the fewest situations come first, then those where they reached least.
 5. What a reply or a document told you, and you never answered, goes on the second list, ordered by what would follow if it is not what you meant. A bare "ok" answers only what the message right before it asked you; it does not answer one line inside a long report. What you did answer is on neither list.
 
-The session also gets a rating on the scale, added up across every audit you run, so you can see whether your sessions are getting better. It rates a session, never a person.
+The session also gets a rating on the scale, added up across every check you run. Over many sessions it shows you where, with the model you use now, a line is enough and where it is not. It rates a session, never a person.
 
 ## What it cannot tell you
 
@@ -203,7 +201,7 @@ The session also gets a rating on the scale, added up across every audit you run
 
 ## Repository
 
-- [`SKILL.md`](SKILL.md) — how the agent runs an audit.
+- [`SKILL.md`](SKILL.md) — how the agent runs a check.
 - [`prompts/`](prompts) — what each reader is told.
 - [`scripts/`](scripts) — preparing, checking and counting, in Node with no dependencies.
 - [`spec/`](spec/the-command-scale-v1.0.md) — The Command Scale v1.0.

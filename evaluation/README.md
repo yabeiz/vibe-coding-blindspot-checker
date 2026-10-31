@@ -1,5 +1,7 @@
 # Next to code review: two real sessions
 
+If you skip the spec, how much of what the agent decides on its own would you have decided differently? In these two sessions, little: of 80 items sampled from this checker's lists, the person would have changed 11. That is what lets you ask in a line and check after, and the 11 are why you check.
+
 Does this find what code review finds? No. Does it find something code review does not? Yes, and it is a different kind of thing. This page is how we know, and how far that goes.
 
 **In short**
