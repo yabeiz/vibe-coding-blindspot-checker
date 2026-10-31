@@ -1,6 +1,6 @@
 {
   "name": "vibe-coding-blindspot-checker",
-  "description": "Find the decisions your coding agent made that you never did, still in your code, starting where your words were weakest on The Command Scale.",
+  "description": "Review a vibe coding session after it ends: a rating of your words on The Command Scale, and the decisions your agent made that you never did, down to the file and line.",
   "version": "0.1.0",
   "author": { "name": "Yabei Z.", "url": "https://github.com/yabeiz" },
   "homepage": "https://github.com/yabeiz/vibe-coding-blindspot-checker",

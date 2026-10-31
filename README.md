@@ -1,6 +1,6 @@
 # vibe-coding-blindspot-checker
 
-**After a coding session, see what your agent decided that you never did — with the file and the line.**
+**Claude Code's `/insights` and YC's Paxel tell you how you work with AI. This tells you what to fix after each session.**
 
 Every vague request is a blank check. This shows you what your coding agent wrote on yours.
 
@@ -19,10 +19,11 @@ npx skills add yabeiz/vibe-coding-blindspot-checker
 
 Then, when a session ends, tell your agent: **`Check my last coding session for blind spots.`** ([Other ways to install](#install))
 
-It reads what you and your agent said and what ended up in your code, and gives you two lists:
+When a session ends, it reads what you and your agent said and what ended up in your code, and gives you:
 
-- **What your agent decided that you never did.** Never in a reply, never in a document, still in your code now, with the file and the line. Tasks where your instructions said least, measured on [The Command Scale](https://github.com/farsurf/command-scale), come first: that is where your agent decided most.
-- **What your agent told you and you never answered.** A decision it mentioned in passing and you let go by. The ones that touch money, data, access, or something sent that cannot be called back come first.
+- **A rating of your words in this session**, on [The Command Scale](https://github.com/farsurf/command-scale): in each of four situations — asking for something, reviewing what came back, saying you are stuck, asking a question — how far your words went. It rates the session, never you, and adds up across sessions, so you can see whether yours are getting better.
+- **What your agent decided that you never did**, starting where your words were weakest, because that is where it decided most for you. Never in a reply, never in a document, still in your code now, with the file and the line.
+- **What your agent told you and you never answered** — a decision it mentioned in passing and you let go by. The ones that touch money, data, access, or something sent that cannot be called back come first.
 
 Then each one is yours to decide, on the spot. The agent does not get to decide it a second time.
 
@@ -93,12 +94,12 @@ All of these read your work. They answer different questions.
 
 | | What it reads | What you get |
 | --- | --- | --- |
-| Code review (e.g. Claude Code's review, open-code-review) | the diff | bugs in the code: does the code do what it is meant to |
 | [Paxel](https://paxel.ycombinator.com) (YC) | your sessions | a profile of how you work with AI |
 | Claude Code `/insights` | your sessions | a report on your habits and workflow |
-| **vibe-coding-blindspot-checker** | **your sessions and your code** | **the decisions your agent made for you, where they are in your code now, and how your words in each task measured on The Command Scale — a list you can act on today** |
+| **vibe-coding-blindspot-checker** | **your sessions and your code** | **a rating of your words in each session, and what to do about it: the decisions your agent made for you, starting where your words were weakest, down to the file and line — a list you can act on today** |
+| Code review (e.g. Claude Code's review, open-code-review) | the diff | bugs in the code: does the code do what it is meant to |
 
-Run it after code review, not instead of it:
+Paxel and `/insights` tell you how you work; this tells you what that left in your code, and lets you settle it. None of the three looks for bugs, so run it after code review, not instead of it:
 
 1. **Run code review first, and let your agent fix what it finds.** Those are bugs: the code does not do what it is meant to. They need no decision from you.
 2. **Then run this.** What it lists is not bugs. Most of it works exactly as written; what it shows you is what your agent decided for you. Whether each is what you meant only you can say.
