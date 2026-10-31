@@ -6,5 +6,5 @@
   "homepage": "https://github.com/yabeiz/vibe-coding-blindspot-checker",
   "repository": "https://github.com/yabeiz/vibe-coding-blindspot-checker",
   "license": "Apache-2.0",
-  "keywords": ["vibe-coding", "spec-driven-development", "claude-code", "agent-skills", "command-scale"]
+  "keywords": ["vibe-coding", "code-review", "spec-driven-development", "claude-code", "agent-skills", "command-scale"]
 }
