@@ -132,7 +132,8 @@ npx skills add yabeiz/vibe-coding-blindspot-checker
 Or as a Claude Code plugin:
 
 ```
-/plugin install vibe-coding-blindspot-checker --marketplace yabeiz/vibe-coding-blindspot-checker
+/plugin marketplace add yabeiz/vibe-coding-blindspot-checker
+/plugin install vibe-coding-blindspot-checker@yabeiz
 ```
 
 <details>
