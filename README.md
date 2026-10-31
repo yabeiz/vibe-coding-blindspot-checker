@@ -13,7 +13,7 @@ The most leverage you get from a coding agent is right at the edge of what it ca
 [![Conformance](https://github.com/yabeiz/vibe-coding-blindspot-checker/actions/workflows/conformance.yml/badge.svg)](https://github.com/yabeiz/vibe-coding-blindspot-checker/actions/workflows/conformance.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0%20%2B%20CC--BY--4.0-lightgrey)](#license)
 
-<!-- HERO: assets/hero.gif goes here once approved -->
+<p align="center"><img src="assets/hero.gif" width="800" alt="You pick one of the agent's own plans. The check then shows what it decided for you: can a declined collaborator ask again? Yes, right away, with no limit — at delegation.service.ts:554."></p>
 
 ## How to use it
 
